@@ -1,13 +1,13 @@
 const crypto = require('crypto');
-const { User } = require('../models/index');
+const { user } = require('../models/index');
 const { makeToken, verify } = require('../createModules/jwt');
 // models에서 불러오기
 
-User.sync();
+user.sync();
 module.exports = {
   usercheck: (req, res, next) => {
     const id = verify(req.headers.authorization).id;
-    return User.findOne({
+    return user.findOne({
       where: { id }
     })
       .then(data => {
@@ -33,7 +33,7 @@ module.exports = {
   },  
   userInfo: (req, res) => {
     const id = verify(req.headers.authorization).id;
-    User.findOne({
+    user.findOne({
       where: { id }
     })
       .then(result => {
@@ -59,7 +59,7 @@ module.exports = {
     let { email, password, name } = req.body.data;
     password = crypto.createHash('sha512').update(password).digest('base64');
     console.log('password', password);  
-    return User.findOrCreate({
+    return user.findOrCreate({
       where: { email: email },
       defaults: { email, password, name }
     })
@@ -83,7 +83,7 @@ module.exports = {
   login: (req, res) => {
     let { email, password } = req.body;
     password = crypto.createHash('sha512').update(password).digest('base64');
-    User.findOne({ where: { email } })
+    user.findOne({ where: { email } })
       .then(result => {
         result = result.dataValues;
         if (result.password === password) {
@@ -98,22 +98,12 @@ module.exports = {
         console.log('ERR', err);
         res.sendStatus(500);
       });
-  }, 
-  logout: (req, res) => {
-    const id = verify(req.headers.authorization).id;
-    if(id) {
-      res.status(200);
-      return res.send({ logout: true });
-    }else{
-      res.status(400);
-      return res.send({ logout: false });
-    }
-  }, 
+  },
   edit: (req, res) => {
     let { password, name } = req.body;
     const id = verify(req.headers.authorization).id;
     password = crypto.createHash('sha512').update(password).digest('base64'); 
-    User.update(
+    user.update(
       { password, name },
       { where: { id } }
     )
@@ -131,8 +121,7 @@ module.exports = {
   },
   delete: (req, res) => {
     const id = verify(req.headers.authorization).id;
-    console.log('id', id);
-    User.destroy({
+    user.destroy({
       where: {
         id
       }

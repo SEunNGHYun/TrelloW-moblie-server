@@ -12,10 +12,14 @@ module.exports = function (sequelize, DataTypes) {
     title: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    visibility : {
+      type : DataTypes.STRING,
+      allowNull: false
     }
   });
   board.associate = function (models) {
-    board.belongsTo(models.User, {
+    board.belongsTo(models.user, {
       foreignKey: 'userId',
       targetKey: 'id',
       onDelete: 'cascade'
