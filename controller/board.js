@@ -3,34 +3,9 @@ const { verify } = require('../createModules/jwt');
 
 board.sync();
 
-
 module.exports = {
-  get: (req, res) => {
-    const id = verify(req.headers.authorization).id;
-    return board.findAll({
-      where: { userId: id }
-    })
-      .then(data => {
-        const result = [];
-        if(data.length > 0) {
-          res.status(200);
-          for(let i = 0; i < data.length; i++) {
-            result.push(data[i].dataValues);
-          }
-          return res.json({ getBoard: result });
-        }else{
-          res.status(204);
-          return res.json({ getBoard: result });
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-        res.status(400);
-        return res.json({ gatBoard: false });
-      });
-  },
   create: (req, res) => {
-    const { title } = req.body;
+    const { title , visibility } = req.body;
     const id = verify(req.headers.authorization).id;   
     board.create({
       title,

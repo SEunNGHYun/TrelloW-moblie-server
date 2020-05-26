@@ -25,6 +25,10 @@ module.exports = function (sequelize, DataTypes) {
       targetKey: 'id',
       onDelete: 'cascade'
     });
+    card.hasMany(models.checklist, {
+      foreignKey: 'cardId',
+      sourceKey:  'id'
+    });
   };
   return card;
 };
