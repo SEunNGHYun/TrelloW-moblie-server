@@ -9,11 +9,13 @@ module.exports = {
     const id = verify(req.headers.authorization).id;   
     board.create({
       title,
+      visibility,
       userId: id
     })
       .then(data => {
+        console.log("data", data)
         if(data.dataValues) {
-          res.status(204);
+          res.status(200);
           return res.json(data.dataValues);
         }
       })
@@ -65,6 +67,7 @@ module.exports = {
       where: { userId: id },
       attributes: ['id', 'title']
     }).then(data => {
+      console.log("board",data);
       const result = [];
       if(data.length > 0) {
         for(let i = 0; i < data.length; i++) {
