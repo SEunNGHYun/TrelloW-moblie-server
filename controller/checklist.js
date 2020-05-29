@@ -4,7 +4,7 @@ checklist.sync();
 
 module.exports = {
     list: (req, res) => {
-        const cardId = req.query.card_id;
+        const cardId = req.params.card_id;
         checklist.findAll({
             cardId: cardId
         })
@@ -13,7 +13,7 @@ module.exports = {
         .catch(err => res.sendStatus(500))
     },
     create: (req, res) => {
-      const cardId = req.query.card_id;
+      const cardId = req.params.card_id;
       let { title, contents, ranking } = req.body;
       ranking = Number(ranking);
       card.create({
@@ -36,7 +36,7 @@ module.exports = {
         });
     },
     delete: (req, res) => {
-      const id = req.query.card_id;
+      const id = req.params.card_id;
       console.log('id', id);
       card.destroy({
         where: {
@@ -53,7 +53,7 @@ module.exports = {
       });
     },
     edit: (req, res) => {
-      const id = req.query.card_id;
+      const id = req.params.card_id;
       let { title, contents, ranking } = req.body;
       ranking = Number(ranking);
       card.update({
