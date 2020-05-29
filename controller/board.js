@@ -13,7 +13,6 @@ module.exports = {
       userId: id
     })
       .then(data => {
-        console.log("data", data)
         if(data.dataValues) {
           res.status(200);
           return res.json(data.dataValues);
@@ -33,7 +32,6 @@ module.exports = {
         id: boardId
       }
     }).then(data => {
-      console.log('data', data);
       res.status(204);
       return res.json({ delete: true });
     }).catch(err => {
@@ -49,7 +47,6 @@ module.exports = {
       where: { id: boardId }
     })
       .then(data => {
-        console.log(data);
         res.status(204);
         return res.json({ edit: true });
       })
@@ -67,7 +64,6 @@ module.exports = {
       where: { userId: id },
       attributes: ['id', 'title']
     }).then(data => {
-      console.log("board",data);
       const result = [];
       if(data.length > 0) {
         for(let i = 0; i < data.length; i++) {

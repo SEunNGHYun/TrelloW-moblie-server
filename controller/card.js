@@ -3,7 +3,7 @@ const { card } = require('../models/index');
 card.sync();
 module.exports = {
   get: (req, res) => {
-    const containerId = req.query.container_id;
+    const containerId = req.params.container_id;
     return card.findAll({
       where: { containerId }
     })
@@ -27,7 +27,7 @@ module.exports = {
       });
   },
   create: (req, res) => {
-    const containerId = req.query.container_id;
+    const containerId = req.params.container_id;
     let { title, contents, ranking } = req.body;
     ranking = Number(ranking);
     card.create({
@@ -37,7 +37,6 @@ module.exports = {
       containerId
     })
       .then(data => {
-        console.log('>>', data.dataValues);
         if(data.dataValues) {
           res.status(201);
           return res.json({ result: data.dataValues });
@@ -50,7 +49,7 @@ module.exports = {
       });
   },
   delete: (req, res) => {
-    const id = req.query.card_id;
+    const id = req.params.card_id;
     console.log('id', id);
     card.destroy({
       where: {
@@ -67,7 +66,7 @@ module.exports = {
     });
   },
   edit: (req, res) => {
-    const id = req.query.card_id;
+    const id = req.params.card_id;
     let { title, contents, ranking } = req.body;
     ranking = Number(ranking);
     card.update({
@@ -88,5 +87,20 @@ module.exports = {
           edit: false
         });
       });
+  },
+  list: (req, res) => {
+    const id = req.params.container_id;
+    card.findAll({ 
+      where: {
+      containerId : id 
+    }}).then(data => {
+      console.log('data', data.dataValues);
+      res.status(204);
+      return res.json({ delete: true });
+    }).catch(err => {
+      console.log('deleteERR', err);
+      res.status(400);
+      return res.json({ delete: false });
+    });
   }
 };
