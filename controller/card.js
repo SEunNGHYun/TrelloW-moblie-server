@@ -28,17 +28,17 @@ module.exports = {
   },
   create: (req, res) => {
     const containerId = req.params.container_id;
-    let { title, contents, ranking } = req.body;
-    ranking = Number(ranking);
+    let { title, contents } = req.body;
+    console.log("title", title,"contents",contents);
     card.create({
       title,
       contents,
-      ranking,
       containerId
     })
       .then(data => {
+        console.log("Data", data.dataValues)
         if(data.dataValues) {
-          res.status(201);
+          res.status(200);
           return res.json({ result: data.dataValues });
         }
       })
@@ -89,14 +89,14 @@ module.exports = {
       });
   },
   list: (req, res) => {
-    const id = req.params.container_id;
+    const containerId = req.params.container_id;
     card.findAll({ 
       where: {
-      containerId : id 
+      containerId 
     }}).then(data => {
-      console.log('data', data.dataValues);
-      res.status(204);
-      return res.json({ delete: true });
+      let CardList = data.map(obj => obj.dataValues)
+      res.status(201);
+      return res.json({ CardList:CardList });
     }).catch(err => {
       console.log('deleteERR', err);
       res.status(400);
