@@ -10,13 +10,24 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     title: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     contents: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
-    ranking: {
-      type: DataTypes.STRING
+    time: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    date: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    lable : { 
+      type: DataTypes.STRING, 
+      allowNull: true 
     }
   });
   card.associate = function (models) {

@@ -14,8 +14,9 @@ module.exports = {
           for(let i = 0; i < data.length; i++) {
             result.push(data[i].dataValues);
           }
-          res.status(200);
-          return res.json({ list: {result} });
+          console.log("REsult",result)
+          res.status(201);
+          return res.json({result});
         }else{
           res.status(204);
           return res.json({ result });
